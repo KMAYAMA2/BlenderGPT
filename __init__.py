@@ -16,7 +16,7 @@ bl_info = {
     "name": "GPT-4 Blender Assistant",
     "blender": (2, 82, 0),
     "category": "Object",
-    "author": "Aarya (@gd3kr)",
+    "author": "Kento (@kmayama2)",
     "version": (2, 0, 0),
     "location": "3D View > UI > GPT-4 Blender Assistant",
     "description": "Generate Blender Python code using OpenAI's GPT-4 to perform various tasks.",
@@ -104,25 +104,26 @@ class GPT4_PT_Panel(bpy.types.Panel):
     bl_region_type = 'UI'
     bl_category = 'GPT-4 Assistant'
 
-    def draw(self, context):
-        layout = self.layout
-        column = layout.column(align=True)
+## THIS? ##
+def draw(self, context):
+    layout = self.layout
+    column = layout.column(align=True)
 
-        column.label(text="Chat history:")
-        box = column.box()
-        for index, message in enumerate(context.scene.gpt4_chat_history):
-            if message.type == 'assistant':
-                row = box.row()
-                row.label(text="Assistant: ")
-                show_code_op = row.operator("gpt4.show_code", text="Show Code")
-                show_code_op.code = message.content
-                delete_message_op = row.operator("gpt4.delete_message", text="", icon="TRASH", emboss=False)
-                delete_message_op.message_index = index
-            else:
-                row = box.row()
-                row.label(text=f"User: {message.content}")
-                delete_message_op = row.operator("gpt4.delete_message", text="", icon="TRASH", emboss=False)
-                delete_message_op.message_index = index
+    column.label(text="Chat history:")
+    box = column.box()
+    for index, message in enumerate(context.scene.gpt4_chat_history):
+        if message.type == 'assistant':
+            row = box.row()
+            row.prop(message, "content", text="Assistant", emboss=False)  # Change this line
+            show_code_op = row.operator("gpt4.show_code", text="Show Code")
+            show_code_op.code = message.content
+            delete_message_op = row.operator("gpt4.delete_message", text="", icon="TRASH", emboss=False)
+            delete_message_op.message_index = index
+        else:
+            row = box.row()
+            row.prop(message, "content", text="User", emboss=False)  # Change this line
+            delete_message_op = row.operator("gpt4.delete_message", text="", icon="TRASH", emboss=False)
+            delete_message_op.message_index = index
 
         column.separator()
         
