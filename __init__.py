@@ -171,7 +171,11 @@ class GPT4_OT_Execute(bpy.types.Operator):
 
         context.scene.gpt4_button_pressed = True
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+        user_input_comment = "# Prompt: " + context.scene.gpt4_chat_input.replace('\n', ' ')
+        blender_code = user_input_comment + "\n" + blender_code
         
+    
         blender_code = generate_blender_code(context.scene.gpt4_chat_input, context.scene.gpt4_chat_history, context, system_prompt)
 
         message = context.scene.gpt4_chat_history.add()
